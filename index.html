@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me - Typewriter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #e7e4dc, #d6d3cb);
+      font-family: 'Special Elite', monospace;
+      color: #2f2f2f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #container {
+      width: 85%;
+      max-width: 900px;
+      height: 90vh;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #c4c1b9;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      font-size: 1.2em;
+    }
+
+    #popup {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 10px;
+      opacity: 1;
+      transition: opacity 1s ease;
+      z-index: 10;
+      font-size: 1em;
+      font-family: 'Special Elite', monospace;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #popup.fadeout {
+      opacity: 0;
+    }
+
+    #typewriter-text::after {
+      content: '|';
+      animation: blink 1s step-end infinite;
+      margin-left: 4px;
+      color: #999;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="popup">Click anywhere to start</div>
+  <div id="container">
+    <div id="typewriter-text"></div>
+  </div>
+  <audio id="keySound" src="typing-sound.mp3"></audio>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const text = `Hi, I'm Dannie 👋\n\nA creator. A coder. A curious explorer of tech.\n\n🎓 Currently a student at Kendriya Vidyalaya.\n💡 Passionate about smart projects that simplify life.\n\n🔧 Projects:\n- VCG (Voice Controlled Graphics)\n- IoT-based Smart Irrigation System\n- IoT Smart Dustbins for Smart Cities\n- GitHub Responsive Profile Pages\n\n🎨 Skills:\n- Python, JavaScript, HTML, CSS\n- UI/UX with Figma\n- Git, GitHub, Automation Tools\n\n🚀 What I'm building next:\n- Gesture-controlled UI project \"VYOM\"\n- Smarter city concepts using IoT & AI\n\n🌱 Hobbies:\n- Designing interfaces, photography, making cinematic videos, building bots\n\n🧠 Quote I live by:\n> \"Stay curious. Build what matters.\"\n\nThanks for visiting my world! 🌍`;
+
+      const target = document.getElementById("typewriter-text");
+      const sound = document.getElementById("keySound");
+      const popup = document.getElementById("popup");
+
+      setTimeout(() => popup.classList.add("fadeout"), 2500);
+
+      function startTyping() {
+        document.removeEventListener("click", startTyping);
+        sound.currentTime = 0;
+        sound.play();
+
+        const characters = [...text];
+        const totalDuration = 16000; // 16 seconds
+        const typingSpeed = totalDuration / characters.length;
+        let i = 0;
+
+        const typeNext = () => {
+          if (i < characters.length) {
+            target.textContent += characters[i];
+            target.scrollTop = target.scrollHeight;
+            i++;
+            setTimeout(typeNext, typingSpeed);
+          }
+        };
+
+        typeNext();
+      }
+
+      document.addEventListener("click", startTyping);
+    });
+  </script>
+</body>
+</html>
